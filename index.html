@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEO Core - Yüzey Mühendisliği</title>
+    <link rel="icon" type="image/png" href="alümina.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 🔬 BİLİMSEL LABORATUVAR RENK PALETİ (Alümina & Plazma Konsepti) */
+        :root {
+            --bg-dark: #0d1117; /* Titanyum Mat Siyah/Gri (Derinlik) */
+            --bg-panel: #161b22; /* İkincil Panel Grisi */
+            --plasma-blue: #58a6ff; /* Dielektrik Kırılma / Plazma Mavisi */
+            --alumina-gray: #c9d1d9; /* Alümina / Metalik Beyaz */
+            --spark-orange: #ff7b72; /* Anodik Kıvılcım / Isı Turuncusu */
+            --text-main: #8b949e; /* Standart okuma metni */
+            --text-light: #f0f6fc; /* Başlıklar ve vurgular */
+            --border-color: rgba(139, 148, 158, 0.3);
+        }
+
+        body {
+            margin: 0; display: flex; min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        #container-wrapper { display: flex; flex-direction: column; width: 100%; }
+
+        /* 📌 SOL MENÜ (NAVBAR) */
+        #sidebar {
+            width: 280px; height: 100vh; background: var(--bg-panel);
+            border-right: 1px solid var(--border-color); display: flex;
+            flex-direction: column; overflow-y: auto; scrollbar-width: thin;
+            scrollbar-color: var(--alumina-gray) var(--bg-dark);
+        }
+
+        #app-content { flex: 1; padding: 30px; overflow-y: auto; position: relative; background: var(--bg-dark); }
+
+        /* 🌟 BİLİMSEL BUTON EFEKTLERİ */
+        .btn-refresh {
+            background: rgba(88, 166, 255, 0.1); color: var(--plasma-blue);
+            border: 1px solid var(--plasma-blue); padding: 8px 12px;
+            border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-refresh:hover {
+            background: rgba(88, 166, 255, 0.2); transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.15);
+        }
+
+        .sci-select {
+            width: 100%; background: var(--bg-dark); color: var(--alumina-gray);
+            border: 1px solid var(--border-color); padding: 8px 10px; border-radius: 4px;
+            font-size: 0.9em; cursor: pointer; outline: none; transition: border-color 0.2s;
+        }
+        .sci-select:focus { border-color: var(--plasma-blue); }
+
+        /* ANA MENÜ BUTONLARI */
+        .menu-btn {
+            background: transparent; color: var(--text-main); border: none;
+            padding: 16px 20px; text-align: left; font-size: 1.05em; cursor: pointer;
+            border-left: 3px solid transparent; transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .menu-btn:hover { background-color: rgba(201, 209, 217, 0.05); color: var(--alumina-gray); }
+        .menu-btn.aktif {
+            border-left: 3px solid var(--plasma-blue); color: var(--plasma-blue);
+            background: linear-gradient(90deg, rgba(88, 166, 255, 0.1) 0%, transparent 100%);
+            font-weight: bold;
+        }
+
+        /* ALT MENÜ (AKORDEON) STİLLERİ */
+        .alt-menu-kapsayici {
+            display: none; flex-direction: column; background-color: rgba(1, 4, 9, 0.3);
+            border-left: 2px solid var(--border-color); margin-left: 10px; margin-bottom: 5px;
+        }
+        .alt-menu-kapsayici.acik { display: flex !important; animation: fadein 0.2s ease; }
+
+        .alt-btn {
+            background: transparent; color: var(--text-main); border: none;
+            padding: 10px 15px 10px 30px; text-align: left; font-size: 0.9em;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .alt-btn:hover { color: var(--alumina-gray); background-color: rgba(201, 209, 217, 0.05); }
+        .alt-btn.aktif { color: var(--plasma-blue); font-weight: bold; }
+
+        /* Simülasyon Slider Stilleri */
+        .sim-label { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        
+        @keyframes fadein { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body>
+    <nav id="sidebar">
+        <div style="padding: 25px 20px; border-bottom: 1px solid var(--border-color);">
+            <h1 style="color: var(--alumina-gray); margin: 0; font-size: 1.5em; letter-spacing: 1px;">
+                PEO <span style="color: var(--plasma-blue);">CORE</span> <span style="font-size: 0.4em; color: var(--text-main); vertical-align: middle;">v1.1</span>
+            </h1>
+            <div style="color: var(--text-main); font-size: 0.75em; margin-top: 5px; letter-spacing: 0.5px;">Termodinamik Analiz Ağı</div>
+        </div>
+
+        <div style="padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn-refresh" onclick="location.reload()">🔄 Sistemi Yenile</button>
+            <div style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                <label style="color: var(--text-main); font-size: 0.75em; text-transform: uppercase; margin-bottom: 8px; display: block; font-weight: bold;">🛠️ Alt Tabaka (Substrat)</label>
+                <select id="global-substrat" class="sci-select">
+                    <option value="Al6061">Alüminyum 6061</option>
+                    <option value="Ti6Al4V">Titanyum Gr5</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="menu-listeler" style="padding-top: 10px;">
+            <button class="menu-btn aktif" id="btn-kinetik" onclick="PeoSimulasyon.toggleMenu('menu-kinetik', 'btn-kinetik')">⚡ Kinetik Analizler</button>
+            <div id="menu-kinetik" class="alt-menu-kapsayici acik">
+                <button class="alt-btn" onclick="PeoSimulasyon.yukle(this, 'voltaj-zaman')">U-t (Voltaj-Zaman) Eğrisi</button>
+                <button class="alt-btn" onclick="PeoSimulasyon.yukle(this, 'osiloskop')">Darbeli Akım Osiloskopu</button>
+            </div>
+
+            <button class="menu-btn" id="btn-korozyon" onclick="PeoSimulasyon.toggleMenu('menu-korozyon', 'btn-korozyon')">🧪 Elektrokimya</button>
+            <div id="menu-korozyon" class="alt-menu-kapsayici">
+                <button class="alt-btn" onclick="PeoSimulasyon.yukle(this, 'elektrokimya')">PDP (Tafel) & EIS (Nyquist)</button>
+            </div>
+
+            <button class="menu-btn" id="btn-malzeme" onclick="PeoSimulasyon.toggleMenu('menu-malzeme', 'btn-malzeme')">🔬 Malzeme Bilimi</button>
+            <div id="menu-malzeme" class="alt-menu-kapsayici">
+                <button class="alt-btn" onclick="PeoSimulasyon.yukle(this, 'faz')">Alfa/Gama Faz Dağılımı</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="container-wrapper">
+        <main id="app-content">
+            <div style="color:var(--text-main); text-align:center; margin-top:50px;">
+                <h1>Termodinamik Motor Başlatılıyor...</h1>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
