@@ -609,7 +609,7 @@ const PeoSimulasyon = {
             let yesilTon = Math.min(255, 60 + (alfaYuzde * 2));
             kAlfa.style.backgroundColor = `rgb(30, ${yesilTon}, 40)`;
         }
-    }
+    },
 // ==========================================
     // 📊 5. LİTERATÜR ANALİZİ (YAYIN/ATIF GRAFİĞİ)
     // ==========================================
@@ -623,7 +623,7 @@ const PeoSimulasyon = {
             </div>
 
             <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                <img src="aso-yayın-atıf (2).jpg" alt="ASO Yayın ve Atıf Grafiği" style="max-width: 100%; border-radius: 6px; box-shadow: 0 0 20px rgba(0,0,0,0.6); border: 1px solid var(--border-color);">
+                <img src="aso-yayın-atıf (2).png" alt="ASO Yayın ve Atıf Grafiği" style="max-width: 100%; border-radius: 6px; box-shadow: 0 0 20px rgba(0,0,0,0.6); border: 1px solid var(--border-color);">
                 <div style="margin-top: 15px; font-size: 0.8em; color: var(--text-main); width: 100%; text-align: right;">
                     *Veriler Scopus/Web of Science tabanlı akademik yayın indekslerinden derlenmiştir.
                 </div>
