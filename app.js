@@ -64,6 +64,9 @@ const PeoSimulasyon = {
             contentDiv.innerHTML = this.cizFazArayuzu();
             this.hesaplaFaz();
         }
+        else if (simType === 'yayin-grafigi') {
+            contentDiv.innerHTML = this.cizYayinGrafikArayuzu();
+        }
     },
 
     guncelleArayuzSecenekleri: function() {
@@ -606,6 +609,26 @@ const PeoSimulasyon = {
             let yesilTon = Math.min(255, 60 + (alfaYuzde * 2));
             kAlfa.style.backgroundColor = `rgb(30, ${yesilTon}, 40)`;
         }
+    }
+// ==========================================
+    // 📊 5. LİTERATÜR ANALİZİ (YAYIN/ATIF GRAFİĞİ)
+    // ==========================================
+    cizYayinGrafikArayuzu: function() {
+        return `
+        <div style="max-width: 1000px; margin: 0 auto; animation: fadein 0.3s ease;">
+            <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">📊 PEO/ASO Literatür Gelişimi (2003-2026)</h1>
+            
+            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: var(--alumina-gray); line-height: 1.6; margin-bottom: 20px;">
+                <b style="color: var(--plasma-blue);">İleri Görüşlü Analiz:</b> Grafikte görüldüğü üzere, Plazma Elektrolitik Oksidasyon (PEO) alanındaki akademik yayınlar ve bu yayınlara yapılan atıflar son 10 yılda eksponansiyel bir patlama yaşamıştır. Bu durum, teknolojinin laboratuvar ölçeğinden çıkıp havacılık, biyomedikal ve otomotiv gibi kritik endüstrilerde standart bir yüzey mühendisliği çözümü haline geldiğinin tartışmasız kanıtıdır.
+            </div>
+
+            <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <img src="aso-yayın-atıf (2).jpg" alt="ASO Yayın ve Atıf Grafiği" style="max-width: 100%; border-radius: 6px; box-shadow: 0 0 20px rgba(0,0,0,0.6); border: 1px solid var(--border-color);">
+                <div style="margin-top: 15px; font-size: 0.8em; color: var(--text-main); width: 100%; text-align: right;">
+                    *Veriler Scopus/Web of Science tabanlı akademik yayın indekslerinden derlenmiştir.
+                </div>
+            </div>
+        </div>`;
     }
 };
 
