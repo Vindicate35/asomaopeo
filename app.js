@@ -90,6 +90,9 @@ const AsoSimulasyon = {
         else if (simType === 'yayin-grafigi') {
             contentDiv.innerHTML = this.cizYayinGrafikArayuzu();
         }
+        else if (simType === 'ekoller') {
+            contentDiv.innerHTML = this.cizEkollerArayuzu();
+        }
     },
 
     // ==========================================
@@ -99,37 +102,37 @@ const AsoSimulasyon = {
         return `
         <div style="max-width: 1200px; margin: 0 auto; animation: fadein 0.3s ease;">
             <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
-                <h1 style="color: var(--text-light); margin: 0;">⚡ Kinetik Analizler: ASO Büyüme Rejimleri</h1>
+                <h1 style="color: #ffffff; margin: 0;">⚡ Kinetik Analizler: ASO Büyüme Rejimleri</h1>
                 <select id="rejim-secici" class="sci-select" style="width: 300px; font-weight: bold; color: var(--plasma-blue); border-color: var(--plasma-blue);" onchange="AsoSimulasyon.degistirRejim()">
                     <option value="galvanostatik">Galvanostatik (Sabit Akım) &rarr; U-t Eğrisi</option>
                     <option value="potansiyostatik">Potansiyostatik (Sabit Voltaj) &rarr; I-t Eğrisi</option>
                 </select>
             </div>
             
-            <div id="substrat-analiz-kutusu" style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.9em; color: var(--alumina-gray); line-height: 1.6; margin-bottom: 20px; min-height: 80px;"></div>
+            <div id="substrat-analiz-kutusu" style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: #ffffff; line-height: 1.6; margin-bottom: 20px; min-height: 80px;"></div>
 
             <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 300px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <h3 style="color:var(--text-light); margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Parametre Kontrolü</h3>
+                    <h3 style="color:#ffffff; margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Parametre Kontrolü</h3>
                     
                     <div style="margin-top: 20px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">💧 Boraks Konsantrasyonu</span><span id="val-boraks" style="color:var(--plasma-blue); font-weight:bold;">0 g/L</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">💧 Boraks Konsantrasyonu</span><span id="val-boraks" style="color:var(--plasma-blue); font-weight:bold;">0 g/L</span></div>
                         <input type="range" id="slider-boraks" min="0" max="15" step="1" value="0" style="width: 100%; margin-top:10px; accent-color: var(--plasma-blue);" oninput="AsoSimulasyon.hesaplaUt()">
                     </div>
                     
                     <div id="kontrol-galvanostatik" style="margin-top: 30px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">⚡ Sabit Akım Yoğunluğu</span><span id="val-akim" style="color:var(--spark-orange); font-weight:bold;">5 A/dm²</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">⚡ Sabit Akım Yoğunluğu</span><span id="val-akim" style="color:var(--spark-orange); font-weight:bold;">5 A/dm²</span></div>
                         <input type="range" id="slider-akim" min="2" max="20" step="1" value="5" style="width: 100%; margin-top:10px; accent-color: var(--spark-orange);" oninput="AsoSimulasyon.hesaplaUt()">
                     </div>
 
                     <div id="kontrol-potansiyostatik" style="margin-top: 30px; display: none;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">⚡ Sabit Anodik Voltaj</span><span id="val-voltaj" style="color:#d2a8ff; font-weight:bold;">250 V</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">⚡ Sabit Anodik Voltaj</span><span id="val-voltaj" style="color:#d2a8ff; font-weight:bold;">250 V</span></div>
                         <input type="range" id="slider-voltaj" min="150" max="400" step="10" value="250" style="width: 100%; margin-top:10px; accent-color: #d2a8ff;" oninput="AsoSimulasyon.hesaplaUt()">
                     </div>
 
                     <div style="margin-top: 40px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
-                        <div id="dinamik-hesap-1" style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">Anlık Kırılma Voltajı:</span><b id="hesap-kirilma" style="color:var(--alumina-gray);">200 V</b></div>
-                        <div id="dinamik-hesap-2" style="display:flex; justify-content:space-between;"><span style="color:var(--text-main);">Kararlı Plato Voltajı:</span><b id="hesap-plato" style="color:var(--plasma-blue);">240 V</b></div>
+                        <div id="dinamik-hesap-1" style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">Anlık Kırılma Voltajı:</span><b id="hesap-kirilma" style="color:#ffffff;">200 V</b></div>
+                        <div id="dinamik-hesap-2" style="display:flex; justify-content:space-between;"><span style="color:#e6edf3;">Kararlı Plato Voltajı:</span><b id="hesap-plato" style="color:var(--plasma-blue);">240 V</b></div>
                     </div>
                 </div>
                 <div style="flex: 2; min-width: 400px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
@@ -144,15 +147,15 @@ const AsoSimulasyon = {
         if (rejim === 'galvanostatik') {
             document.getElementById('kontrol-galvanostatik').style.display = 'block';
             document.getElementById('kontrol-potansiyostatik').style.display = 'none';
-            document.getElementById('dinamik-hesap-1').innerHTML = `<span style="color:var(--text-main);">Anlık Kırılma Voltajı:</span><b id="hesap-kirilma" style="color:var(--alumina-gray);"></b>`;
-            document.getElementById('dinamik-hesap-2').innerHTML = `<span style="color:var(--text-main);">Kararlı Plato Voltajı:</span><b id="hesap-plato" style="color:var(--plasma-blue);"></b>`;
+            document.getElementById('dinamik-hesap-1').innerHTML = `<span style="color:#e6edf3;">Anlık Kırılma Voltajı:</span><b id="hesap-kirilma" style="color:#ffffff;"></b>`;
+            document.getElementById('dinamik-hesap-2').innerHTML = `<span style="color:#e6edf3;">Kararlı Plato Voltajı:</span><b id="hesap-plato" style="color:var(--plasma-blue);"></b>`;
             this.aktifGrafikUT.options.scales.y.title.text = 'Anodik Voltaj (V)';
             this.aktifGrafikUT.options.scales.y.max = 700;
         } else {
             document.getElementById('kontrol-galvanostatik').style.display = 'none';
             document.getElementById('kontrol-potansiyostatik').style.display = 'block';
-            document.getElementById('dinamik-hesap-1').innerHTML = `<span style="color:var(--text-main);">Başlangıç Tepe (Surge) Akımı:</span><b id="hesap-kirilma" style="color:var(--alumina-gray);"></b>`;
-            document.getElementById('dinamik-hesap-2').innerHTML = `<span style="color:var(--text-main);">Rezidüel Plato Akımı:</span><b id="hesap-plato" style="color:#d2a8ff;"></b>`;
+            document.getElementById('dinamik-hesap-1').innerHTML = `<span style="color:#e6edf3;">Başlangıç Tepe (Surge) Akımı:</span><b id="hesap-kirilma" style="color:#ffffff;"></b>`;
+            document.getElementById('dinamik-hesap-2').innerHTML = `<span style="color:#e6edf3;">Rezidüel Plato Akımı:</span><b id="hesap-plato" style="color:#d2a8ff;"></b>`;
             this.aktifGrafikUT.options.scales.y.title.text = 'Akım Yoğunluğu (A/dm²)';
             this.aktifGrafikUT.options.scales.y.max = 50;
         }
@@ -195,7 +198,7 @@ const AsoSimulasyon = {
             if (analizKutusu) {
                 if (elektrolit === 'asidik') {
                     analizKutusu.style.borderLeft = "4px solid #d2a8ff";
-                    analizKutusu.innerHTML = `<div style="display:flex; align-items:center; gap: 10px; margin-bottom: 8px;"><b style="color: #d2a8ff; font-size:1.1em;">🧪 ASO (Anodik Kıvılcım) Rejimi</b></div><div>Seyreltik asidik ortamda yüksek iletkenlik sayesinde anodik kıvılcımlanma <b>200-250V</b> gibi düşük potansiyellerde gerçekleşir. Deşarjlar termal olarak daha yumuşaktır (soft-sparking).</div>`;
+                    analizKutusu.innerHTML = `<div style="display:flex; align-items:center; gap: 10px; margin-bottom: 8px;"><b style="color: #d2a8ff; font-size:1.1em;">🧪 Seyreltik Sülfürik Asit (H₂SO₄) – ASO Rejimi</b></div><div>Seyreltik asidik ortamda yüksek iletkenlik sayesinde anodik kıvılcımlanma <b>200-250V</b> gibi düşük potansiyellerde gerçekleşir. Deşarjlar termal olarak daha yumuşaktır (soft-sparking).</div>`;
                 } else {
                     analizKutusu.style.borderLeft = "4px solid var(--spark-orange)";
                     analizKutusu.innerHTML = `<div style="display:flex; align-items:center; gap: 10px; margin-bottom: 8px;"><span style="display:inline-block; width:15px; height:15px; border-radius:50%; background-color:${sVeri.renk};"></span><b style="color: ${sVeri.renk}; font-size:1.1em;">${sVeri.isim} Galvanostatik Büyüme (U-t)</b></div><div>Güç Kaynağından Çekilen Toplam Akım: <b style="color:var(--spark-orange);">${toplamAkim.toFixed(1)} Amper</b> (${alan} dm²). <b>${sVeri.analiz}</b></div>`;
@@ -278,8 +281,8 @@ const AsoSimulasyon = {
             options: {
                 responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
                 scales: {
-                    x: { title: { display: true, text: 'İşlem Süresi (Saniye)', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' } },
-                    y: { title: { display: true, text: 'Anodik Voltaj (V)', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: 0, max: 700 }
+                    x: { title: { display: true, text: 'İşlem Süresi (Saniye)', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' } },
+                    y: { title: { display: true, text: 'Anodik Voltaj (V)', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: 0, max: 700 }
                 },
                 animation: { duration: 200 }
             }
@@ -293,28 +296,28 @@ const AsoSimulasyon = {
     cizOsiloskopArayuzu: function () {
         return `
         <div style="max-width: 1200px; margin: 0 auto; animation: fadein 0.3s ease;">
-            <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">📡 Kinetik Analizler: Darbeli Akım Osiloskopu</h1>
-            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.9em; color: var(--alumina-gray); line-height: 1.6; margin-bottom: 20px;">
+            <h1 style="color: #ffffff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">📡 Kinetik Analizler: Darbeli Akım Osiloskopu</h1>
+            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: #ffffff; line-height: 1.6; margin-bottom: 20px;">
                 <b style="color: var(--plasma-blue);">ℹ️ Model: ASO Termal Şok Teorisi</b><br>
                 Yüksek termal kütleli numunelerde yanıkları engellemek ve en sert <b>&alpha;-Al<sub>2</sub>O<sub>3</sub></b> fazını elde etmek için şok soğutma (quenching) şarttır. <b>Frekans</b> ve <b>Görev Döngüsü</b> ile oynayarak <b>T<sub>off</sub></b> dinlenme sürelerini optimize edebilirsiniz.
             </div>
             <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 300px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <h3 style="color:var(--text-light); margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Güç Kaynağı Kontrolü</h3>
+                    <h3 style="color:#ffffff; margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Güç Kaynağı Kontrolü</h3>
                     <div style="margin-top: 20px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">⏱️ Frekans (Hz)</span><span id="val-frekans" style="color:var(--alumina-gray); font-weight:bold;">1000 Hz</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">⏱️ Frekans (Hz)</span><span id="val-frekans" style="color:#ffffff; font-weight:bold;">1000 Hz</span></div>
                         <input type="range" id="slider-frekans" min="50" max="2000" step="50" value="1000" style="width: 100%; accent-color: var(--alumina-gray);" oninput="AsoSimulasyon.hesaplaOsiloskop()">
                     </div>
                     <div style="margin-top: 30px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">🔥 Görev Döngüsü (Duty Cycle)</span><span id="val-duty" style="color:var(--spark-orange); font-weight:bold;">20%</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">🔥 Görev Döngüsü (Duty Cycle)</span><span id="val-duty" style="color:var(--spark-orange); font-weight:bold;">20%</span></div>
                         <input type="range" id="slider-duty" min="10" max="90" step="5" value="20" style="width: 100%; accent-color: var(--spark-orange);" oninput="AsoSimulasyon.hesaplaOsiloskop()">
                     </div>
                     <div style="margin-top: 30px; border-top: 1px dashed var(--border-color); padding-top: 20px; background: rgba(0,0,0,0.2); border-radius: 6px; padding: 15px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">Açık Kalma (T<sub>on</sub>):</span><b id="hesap-ton" style="color:var(--spark-orange);">0.2 ms</b></div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">Kapalı/Soğuma (T<sub>off</sub>):</span><b id="hesap-toff" style="color:var(--plasma-blue);">0.8 ms</b></div>
-                        <div style="display:flex; justify-content:space-between; border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 5px;"><span style="color:var(--text-main);">Toplam Periyot (T):</span><b id="hesap-periyot" style="color:var(--alumina-gray);">1.0 ms</b></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">Açık Kalma (T<sub>on</sub>):</span><b id="hesap-ton" style="color:var(--spark-orange);">0.2 ms</b></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">Kapalı/Soğuma (T<sub>off</sub>):</span><b id="hesap-toff" style="color:var(--plasma-blue);">0.8 ms</b></div>
+                        <div style="display:flex; justify-content:space-between; border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 5px;"><span style="color:#e6edf3;">Toplam Periyot (T):</span><b id="hesap-periyot" style="color:#ffffff;">1.0 ms</b></div>
                     </div>
-                    <div id="osiloskop-analiz-kutusu" style="margin-top: 20px; background: rgba(0,0,0,0.3); border-left: 4px solid #3fb950; border-radius: 6px; padding: 15px; font-size: 0.85em; line-height: 1.5; color: var(--text-light); transition: all 0.3s ease;">Analiz Yükleniyor...</div>
+                    <div id="osiloskop-analiz-kutusu" style="margin-top: 20px; background: rgba(0,0,0,0.3); border-left: 4px solid #3fb950; border-radius: 6px; padding: 15px; font-size: 0.9em; line-height: 1.5; color: #ffffff; transition: all 0.3s ease;">Analiz Yükleniyor...</div>
                 </div>
                 <div style="flex: 2; min-width: 400px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; position: relative;">
                     <div style="position: absolute; top:0; left:0; right:0; bottom:0; background-image: linear-gradient(rgba(88, 166, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(88, 166, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; border-radius:8px; pointer-events:none;"></div>
@@ -383,8 +386,8 @@ const AsoSimulasyon = {
             options: {
                 responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
                 scales: {
-                    x: { title: { display: true, text: 'Zaman (Milisaniye - ms)', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0)' }, ticks: { color: '#8b949e', maxTicksLimit: 10 } },
-                    y: { title: { display: true, text: 'Akım Genliği (%)', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: -10, max: 120 }
+                    x: { title: { display: true, text: 'Zaman (Milisaniye - ms)', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0)' }, ticks: { color: '#e6edf3', maxTicksLimit: 10 } },
+                    y: { title: { display: true, text: 'Akım Genliği (%)', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: -10, max: 120 }
                 },
                 animation: { duration: 0 }
             }
@@ -398,31 +401,31 @@ const AsoSimulasyon = {
     cizElektrokimyaArayuzu: function () {
         return `
         <div style="max-width: 1200px; margin: 0 auto; animation: fadein 0.3s ease;">
-            <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">🧪 Bütünleşik Elektrokimyasal Performans (PDP & EIS)</h1>
+            <h1 style="color: #ffffff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">🧪 Bütünleşik Elektrokimyasal Performans (PDP & EIS)</h1>
             <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top:20px;">
                 <div style="flex: 1; min-width: 300px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <h3 style="color:var(--text-light); margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Zırh Bütünlüğü Kontrolü</h3>
+                    <h3 style="color:#ffffff; margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Zırh Bütünlüğü Kontrolü</h3>
                     <div style="margin-top: 20px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">🛡️ Nominal Kaplama Kalitesi</span><span id="val-elektro-kalite" style="color:#ffb84d; font-weight:bold;">0%</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">🛡️ Nominal Kaplama Kalitesi</span><span id="val-elektro-kalite" style="color:#ffb84d; font-weight:bold;">0%</span></div>
                         <input type="range" id="slider-elektro-kalite" min="0" max="100" step="1" value="0" style="width: 100%; margin-top:10px; accent-color: #ffb84d;" oninput="AsoSimulasyon.hesaplaElektrokimya()">
                     </div>
                     <div style="margin-top: 40px; border-top: 1px dashed var(--border-color); padding-top: 20px; background: rgba(0,0,0,0.2); border-radius: 6px; padding: 15px;">
-                        <div style="color:#ff7b72; font-size:0.8em; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">🧪 Potansiyodinamik Veriler (Tafel)</div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">Korozyon Potansiyeli (E<sub>corr</sub>):</span><b id="hesap-ecorr" style="color:var(--alumina-gray);">-0.80 V</b></div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 25px;"><span style="color:var(--text-main);">Korozyon Akımı (I<sub>corr</sub>):</span><b id="hesap-icorr" style="color:#ff7b72;">1.00e-4 A/cm²</b></div>
+                        <div style="color:#ff7b72; font-size:0.85em; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">🧪 Potansiyodinamik Veriler (Tafel)</div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">Korozyon Potansiyeli (E<sub>corr</sub>):</span><b id="hesap-ecorr" style="color:#ffffff;">-0.80 V</b></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 25px;"><span style="color:#e6edf3;">Korozyon Akımı (I<sub>corr</sub>):</span><b id="hesap-icorr" style="color:#ff7b72;">1.00e-4 A/cm²</b></div>
                         
-                        <div style="color:#58a6ff; font-size:0.8em; font-weight:bold; margin-bottom:10px; text-transform:uppercase; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">🔍 Empedans Verileri (Nyquist)</div>
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">Bariyer Direnci (R<sub>b</sub>):</span><b id="hesap-rb" style="color:#58a6ff;">1,000 &Omega;</b></div>
-                        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-main);">Toplam Koruma (R<sub>por</sub> + R<sub>b</sub>):</span><b id="hesap-rtoplam" style="color:var(--alumina-gray);">1,500 &Omega;</b></div>
+                        <div style="color:#58a6ff; font-size:0.85em; font-weight:bold; margin-bottom:10px; text-transform:uppercase; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">🔍 Empedans Verileri (Nyquist)</div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">Bariyer Direnci (R<sub>b</sub>):</span><b id="hesap-rb" style="color:#58a6ff;">1,000 &Omega;</b></div>
+                        <div style="display:flex; justify-content:space-between;"><span style="color:#e6edf3;">Toplam Koruma (R<sub>por</sub> + R<sub>b</sub>):</span><b id="hesap-rtoplam" style="color:#ffffff;">1,500 &Omega;</b></div>
                     </div>
                 </div>
                 <div style="flex: 2; display: flex; flex-direction: column; gap: 20px; min-width: 400px;">
                     <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; position: relative;">
-                        <div style="position: absolute; top: 10px; left: 15px; font-size:0.8em; color:#ff7b72; font-weight:bold;">Tafel Eğrisi (Butler-Volmer)</div>
+                        <div style="position: absolute; top: 10px; left: 15px; font-size:0.85em; color:#ff7b72; font-weight:bold;">Tafel Eğrisi (Butler-Volmer)</div>
                         <div style="position: relative; height: 320px; width: 100%; margin-top:20px;"><canvas id="elektro-tafel-chart"></canvas></div>
                     </div>
                     <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; position: relative;">
-                        <div style="position: absolute; top: 10px; left: 15px; font-size:0.8em; color:#58a6ff; font-weight:bold;">Nyquist Çemberi (Randles Devresi)</div>
+                        <div style="position: absolute; top: 10px; left: 15px; font-size:0.85em; color:#58a6ff; font-weight:bold;">Nyquist Çemberi (Randles Devresi)</div>
                         <div style="position: relative; height: 320px; width: 100%; margin-top:20px;"><canvas id="elektro-nyquist-chart"></canvas></div>
                     </div>
                 </div>
@@ -502,8 +505,8 @@ const AsoSimulasyon = {
                 options: {
                     responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } },
                     scales: {
-                        x: { title: { display: true, text: 'Log Akım Yoğunluğu (Log I)', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: -10, max: 0 },
-                        y: { title: { display: true, text: 'Potansiyel (E) [V]', color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: -1.2, max: 0.2 }
+                        x: { title: { display: true, text: 'Log Akım Yoğunluğu (Log I)', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: -10, max: 0 },
+                        y: { title: { display: true, text: 'Potansiyel (E) [V]', color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: -1.2, max: 0.2 }
                     },
                     animation: { duration: 0 }
                 }
@@ -519,8 +522,8 @@ const AsoSimulasyon = {
                 options: {
                     responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } },
                     scales: {
-                        x: { title: { display: true, text: "Gerçek Empedans, Z' (\u03A9)", color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: 0 },
-                        y: { title: { display: true, text: "-Sanal Empedans, -Z'' (\u03A9)", color: '#c9d1d9', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#8b949e' }, min: 0 }
+                        x: { title: { display: true, text: "Gerçek Empedans, Z' (\u03A9)", color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: 0 },
+                        y: { title: { display: true, text: "-Sanal Empedans, -Z'' (\u03A9)", color: '#ffffff', font: { size: 14, weight: 'bold' } }, grid: { color: 'rgba(201, 209, 217, 0.05)' }, ticks: { color: '#e6edf3' }, min: 0 }
                     },
                     animation: { duration: 0 }
                 }
@@ -535,30 +538,30 @@ const AsoSimulasyon = {
     cizFazArayuzu: function () {
         return `
         <div style="max-width: 1000px; margin: 0 auto; animation: fadein 0.3s ease;">
-            <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">🔬 &alpha;-Al<sub>2</sub>O<sub>3</sub> / &gamma;-Al<sub>2</sub>O<sub>3</sub> Faz Dönüşümü</h1>
+            <h1 style="color: #ffffff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">🔬 &alpha;-Al<sub>2</sub>O<sub>3</sub> / &gamma;-Al<sub>2</sub>O<sub>3</sub> Faz Dönüşümü</h1>
             <div style="display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 300px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <h3 style="color:var(--text-light); margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Termal Döngü Kontrolü</h3>
+                    <h3 style="color:#ffffff; margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">🎛️ Termal Döngü Kontrolü</h3>
                     <div style="margin-top: 20px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">⏱️ İşlem Süresi (Dk)</span><span id="val-sure" style="color:var(--spark-orange); font-weight:bold;">5 Dk</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">⏱️ İşlem Süresi (Dk)</span><span id="val-sure" style="color:var(--spark-orange); font-weight:bold;">5 Dk</span></div>
                         <input type="range" id="slider-sure" min="5" max="60" step="5" value="5" style="width: 100%; accent-color: var(--spark-orange);" oninput="AsoSimulasyon.hesaplaFaz()">
                     </div>
                     <div style="margin-top: 30px;">
-                        <div class="sim-label"><span style="font-weight:bold; color:var(--text-main);">🧪 Tungstat / Bor Katkısı</span><span id="val-katki" style="color:var(--plasma-blue); font-weight:bold;">Yok</span></div>
+                        <div class="sim-label"><span style="font-weight:bold; color:#e6edf3;">🧪 Tungstat / Bor Katkısı</span><span id="val-katki" style="color:var(--plasma-blue); font-weight:bold;">Yok</span></div>
                         <input type="range" id="slider-katki" min="0" max="1" step="1" value="0" style="width: 100%; accent-color: var(--plasma-blue);" oninput="AsoSimulasyon.hesaplaFaz()">
                     </div>
                     <div style="margin-top: 40px; border-top: 1px dashed var(--border-color); padding-top: 20px; background: rgba(0,0,0,0.2); border-radius: 6px; padding: 15px;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:var(--text-main);">&gamma;-Al<sub>2</sub>O<sub>3</sub> (Gözenekli):</span><b id="hesap-gama" style="color:#ff7b72;">90%</b></div>
-                        <div style="display:flex; justify-content:space-between; border-top: 1px solid var(--border-color); padding-top: 10px;"><span style="color:var(--text-main);">&alpha;-Al<sub>2</sub>O<sub>3</sub> (Korindon):</span><b id="hesap-alfa" style="color:#3fb950;">10%</b></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="color:#e6edf3;">&gamma;-Al<sub>2</sub>O<sub>3</sub> (Gözenekli):</span><b id="hesap-gama" style="color:#ff7b72;">90%</b></div>
+                        <div style="display:flex; justify-content:space-between; border-top: 1px solid var(--border-color); padding-top: 10px;"><span style="color:#e6edf3;">&alpha;-Al<sub>2</sub>O<sub>3</sub> (Korindon):</span><b id="hesap-alfa" style="color:#3fb950;">10%</b></div>
                     </div>
                 </div>
                 <div style="flex: 1.5; min-width: 350px; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display:flex; flex-direction:column; align-items:center;">
-                    <h3 style="color:var(--alumina-gray); margin-top:0; margin-bottom: 20px;">SEM Kesit Morfolojisi (Mikroyapı)</h3>
+                    <h3 style="color:#ffffff; margin-top:0; margin-bottom: 20px;">SEM Kesit Morfolojisi (Mikroyapı)</h3>
                     <div style="width: 100%; max-width: 300px; height: 350px; display: flex; flex-direction: column; border: 2px solid #30363d; border-radius: 8px; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.9);">
                         <div style="height: 10%; background: rgba(88, 166, 255, 0.05); border-bottom: 2px dashed var(--plasma-blue); display:flex; justify-content:center; align-items:center; font-size: 0.8em; color: var(--plasma-blue); text-shadow: 0 0 5px var(--plasma-blue);">Elektrolit (ASO Arayüzü)</div>
                         <div id="katman-gama" style="height: 60%; background-color: #4a1c1a; background-image: radial-gradient(circle at 20% 30%, #1a0808 4px, transparent 5px), radial-gradient(circle at 70% 60%, #1a0808 6px, transparent 7px), radial-gradient(circle at 40% 80%, #1a0808 3px, transparent 4px), radial-gradient(circle at 85% 25%, #1a0808 5px, transparent 6px), radial-gradient(circle at 10% 70%, #1a0808 4px, transparent 5px), radial-gradient(circle at 60% 15%, #1a0808 3px, transparent 4px); display:flex; justify-content:center; align-items:center; color:#ff7b72; font-weight:bold; text-shadow: 1px 1px 2px #000; transition: height 0.5s ease-in-out, opacity 0.5s;">&gamma;-Fazı (Amorf/Gözenekli)</div>
                         <div id="katman-alfa" style="height: 10%; background-color: #1e4a28; background-image: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0,0,0,0.3) 12px, rgba(0,0,0,0.3) 14px); display:flex; justify-content:center; align-items:center; color:#a1d586; font-weight:bold; text-shadow: 1px 1px 2px #000; transition: height 0.5s ease-in-out; border-top: 2px solid #5c2b29; border-bottom: 3px solid #3fb950; box-shadow: 0 -5px 15px rgba(0,0,0,0.5);">&alpha;-Fazı (Sert Bariyer)</div>
-                        <div style="height: 20%; background-color: #30363d; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 6px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 6px); display:flex; justify-content:center; align-items:center; color:var(--text-main); font-weight:bold; text-shadow: 1px 1px 2px #000;">Metalik Substrat</div>
+                        <div style="height: 20%; background-color: #30363d; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 6px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 6px); display:flex; justify-content:center; align-items:center; color:#e6edf3; font-weight:bold; text-shadow: 1px 1px 2px #000;">Metalik Substrat</div>
                     </div>
                 </div>
             </div>
@@ -612,13 +615,90 @@ const AsoSimulasyon = {
     // ==========================================
     cizYayinGrafikArayuzu: function () {
         return `
-        <div style="max-width: 1000px; margin: 0 auto; animation: fadein 0.3s ease;">
-            <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">📊 ASO/PEO Literatür Gelişimi (2003-2026)</h1>
-            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: var(--alumina-gray); line-height: 1.6; margin-bottom: 20px;">
-                <b style="color: var(--plasma-blue);">İleri Görüşlü Analiz:</b> Grafikte görüldüğü üzere, Anodik Kıvılcım Oksidasyonu (ASO) alanındaki akademik yayınlar son 10 yılda eksponansiyel bir patlama yaşamıştır.
+        <div style="max-width: 1300px; width: 95%; margin: 0 auto; animation: fadein 0.3s ease;">
+            <h1 style="color: #ffffff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">📊 ASO/PEO Literatür Gelişimi (1983-2026)</h1>
+            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: #ffffff; line-height: 1.6; margin-bottom: 25px;">
+                Yüzey mühendisliğinde 1970'lerde Anodik Kıvılcım (ASO) ile başlayan, 80'lerde Mikro-Ark (MAO) ile evrilen ve 90'lar sonrasında Plazma Elektrolitik Oksidasyon (PEO) adını alan bu dielektrik kırılma teknolojilerinin tamamı, son 20 yılda muazzam bir eksponansiyel patlama yaşamıştır. Özellikle çevre dostu ve düşük voltajlı <b>"Yumuşak Kıvılcım" (Soft-Sparking)</b> rejimine olan endüstriyel talep, ASO modifikasyonlarını global mühendisliğin en sıcak araştırma konularından biri haline getirmiştir.
             </div>
-            <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                <img src="image_d8ea47.jpg" alt="ASO Yayın ve Atıf Grafiği" style="max-width: 100%; border-radius: 6px; box-shadow: 0 0 20px rgba(0,0,0,0.6); border: 1px solid var(--border-color);">
+            <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 10px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <div style="width: 100%; overflow: hidden; border-radius: 8px; box-shadow: 0 0 25px rgba(0,0,0,0.8); border: 1px solid var(--border-color); background: #ffffff;">
+                    <img src="aso_mao_peo_1983_2026_yayin_atif_verileri.jpg" alt="1983-2026 ASO MAO PEO Yayın ve Atıf Verileri" style="width: 100%; height: auto; display: block;">
+                </div>
+                <p style="font-size: 0.95em; color: #e6edf3; margin-top: 20px; font-style: italic; text-align: justify; line-height: 1.6; width: 100%; box-sizing: border-box;">
+                    1983 yılından 2026 yılı ortasına kadar Anodik Kıvılcım Oksidasyonu (ASO), Mikro-Ark Oksidasyonu (MAO) ve Plazma Elektrolitik Oksidasyon (PEO) literatürüne ait yıllık yayın ve atıf istatistikleri (Toplam 6.238 Yayın | ~180.322 Atıf). Yayın ve atıf verileri aynı makale havuzunu referans aldığından, en güncel yıl olan 2026'ya ait atıf sayıları henüz yapım aşamasında olduğu için doğal olarak düşük eğimlidir. <em>(Bu veriler; Web of Science Core Collection veritabanı üzerinden polimer ve tıp alanındaki kısaltma çakışmaları elenerek, sadece yüzey mühendisliği ve elektrokimya kategorilerinde 'Anodic Spark Oxidation', 'Micro-Arc Oxidation' ve 'Plasma Electrolytic Oxidation' tam terim öbeklerini barındıran makaleler izole edilerek elde edilmiştir.)</em>
+                </p>
+            </div>
+        </div>`;
+    },
+
+    // ==========================================
+    // ⚡ 6. EKOLLER & ÇALIŞMA ARALIKLARI (YENİ MODÜL)
+    // ==========================================
+    cizEkollerArayuzu: function () {
+        return `
+        <div style="max-width: 1200px; margin: 0 auto; animation: fadein 0.3s ease;">
+            <h1 style="color: #ffffff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">⚡ PEO, MAO ve ASO: Deneysel Çalışma Aralıkları ve Ekol Farkları</h1>
+            <div style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.2); border-radius: 8px; padding: 15px 20px; font-size: 0.95em; color: #ffffff; line-height: 1.6; margin-bottom: 20px;">
+                Yüzey mühendisliğinde temel ilke olarak her üç yöntem de valf metallerinin anodik kutuplanması ve uygulanan yüksek elektrik alanı altında yalıtkan oksit filminin dielektrik kırılmaya (breakdown) uğramasıyla başlar. Ancak sürecin hangi termodinamik enerjide, hangi voltaj aralığında ve hangi plazma fazında çalıştırıldığına göre isimlendirme, morfolojik çıktı ve endüstriyel hedef kökten değişir.
+            </div>
+            <div style="overflow-x: auto; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--plasma-blue); color: #ffffff;">
+                            <th style="padding: 12px; width: 18%;">Karşılaştırma Metriği</th>
+                            <th style="padding: 12px; width: 27%; background: rgba(88, 166, 255, 0.1); color: var(--plasma-blue);">⚡ ASO (Anodic Spark Oxidation)<br><small style="color:#e6edf3;">Tez Hedefimiz</small></th>
+                            <th style="padding: 12px; width: 27%;">🔥 MAO (Micro-Arc Oxidation)</th>
+                            <th style="padding: 12px; width: 28%;">💥 PEO (Plasma Electrolytic Oxidation)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Tarihsel Gelişim ve Ekol</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #e6edf3;">1970'ler (Brown ve çalışma arkadaşları). ABD/İlk Dönem Ekolü.</td>
+                            <td style="padding: 12px; color: #e6edf3;">1980'ler - 1990'lar (Markov, Snezhko). Rus ve Çin Ekolleri.</td>
+                            <td style="padding: 12px; color: #e6edf3;">1990'lar - Günümüz (Kurze, Yerokhin). Avrupa/İngiliz Ekolü.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Deneysel Voltaj Aralığı</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: var(--plasma-blue); font-weight: bold;">200 V – 250 V<br><small style="color:#e6edf3; font-weight:normal;">Dielektrik bozulma eşiğinin hemen üzeri (Plato)</small></td>
+                            <td style="padding: 12px; color: var(--spark-orange); font-weight: bold;">250 V – 450 V<br><small style="color:#e6edf3; font-weight:normal;">Dinamik geçiş ve ark büyüme bandı</small></td>
+                            <td style="padding: 12px; color: #f85149; font-weight: bold;">500 V – 650 V+<br><small style="color:#e6edf3; font-weight:normal;">Yüksek enerjili plazma yıkım ve sinterleme bandı</small></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Deşarj / Kıvılcım Fiziği</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #e6edf3;"><b>"Yumuşak Kıvılcım" (Soft-Sparking):</b> Ayrık, incecik, mavi-beyaz ve düşük enerjili sessiz mikro-kıvılcımlar.</td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>Mikro-Arklar:</b> Kıvılcımların birleşerek yüzeyde hareket eden gürültülü ve daha büyük ark kaskadlarına dönüşmesi.</td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>Şiddetli Plazma Deşarjları:</b> Yüksek yerel sıcaklık yaratan (10<sup>4</sup> K), uzun ömürlü ve bölgesel erimelere yol açan devasa arklar.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Mikro-Deşarj Ömrü</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #e6edf3;"><b>~10 – 50 &micro;s</b><br><small style="color:#e6edf3;">Milisaniyeler içinde şok soğuma ile sönümlenir</small></td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>~50 – 200 &micro;s</b><br><small style="color:#e6edf3;">Gaz kabarcığı büyümesi ve molalar dengededir</small></td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>~200 – 1000 &micro;s+</b><br><small style="color:#e6edf3;">Uzun süreli plazma sütunları ısı havuzu yaratır</small></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Dominant Faz ve Kristalografi</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #e6edf3;">Ağırlıklı olarak <b>Amorf</b> ve yarı-kararlı <b>&gamma;-Al<sub>2</sub>O<sub>3</sub></b>. Alt katmanlarda katı-hal dönüşümlü &alpha;-fazı.</td>
+                            <td style="padding: 12px; color: #e6edf3;">Amorf matris içinde sinterlenmiş <b>&gamma;-Al<sub>2</sub>O<sub>3</sub></b> ve artan oranda <b>&alpha;-Al<sub>2</sub>O<sub>3</sub></b> dengesi.</td>
+                            <td style="padding: 12px; color: #e6edf3;">Termodinamik olarak en kararlı, ultra sert <b>&alpha;-Al<sub>2</sub>O<sub>3</sub></b> (Korindon / Safir fazı) baskındır.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Morfoloji ve Porozite</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #e6edf3;"><b>Ultra-Düşük Porozite (<%2):</b> Kompozit katkılarla (Bor, h-BN, Grafen) mühürlenmiş, mikro-çatlaksız sıkı matris.</td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>Orta Porozite (%5 - %10):</b> Kontrollü volkanik kraterler ve katı yağlayıcılar için mikro-rezervuarlar.</td>
+                            <td style="padding: 12px; color: #e6edf3;"><b>Yüksek Porozite (%10 - %20+):</b> Şiddetli O₂ gaz evrimi ve buharlaşma nedeniyle oluşan derin volkanik kraterler ve termal çatlaklar.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; font-weight: bold; color: #ffffff;">Endüstriyel Hedef ve Hitap Ettiği Kısım</td>
+                            <td style="padding: 12px; background: rgba(88, 166, 255, 0.03); color: #ffffff;"><b>Fonksiyonel Yüzey Mühendisliği:</b> Tribolojik katı yağlama (COF: 0.18), fotokataliz, biyo-seramik emdirme ve hassas koruma.</td>
+                            <td style="padding: 12px; color: #ffffff;"><b>Genel Aşınma ve Korozyon:</b> Orta ve ağır yük taşıyan makine parçaları, otomotiv motor blokları ve denizcilik alaşımları.</td>
+                            <td style="padding: 12px; color: #ffffff;"><b>Ağır Sanayi Zırhı:</b> Aşırı termal ve mekanik strese maruz kalan askeri, nükleer ve havacılık bileşenleri.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 15px; font-size: 0.85em; color: #e6edf3; text-align: right;">
+                <b>Literatür Referansları:</b> Clyne & Troughton (2018); Ding vd. (2024); Bousser vd. (2023); Hakimizad vd. (2018); Korzekwa (2023); Z. Li vd. (2025).
             </div>
         </div>`;
     }
