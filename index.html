@@ -12,11 +12,13 @@
             --bg-dark: #0d1117;
             --bg-panel: #161b22;
             --plasma-blue: #58a6ff;
-            --alumina-gray: #c9d1d9;
+            --alumina-gray: #ffffff;
+            /* Daha parlak beyaz yapıldı */
             --spark-orange: #ff7b72;
-            --text-main: #8b949e;
-            --text-light: #f0f6fc;
-            --border-color: rgba(139, 148, 158, 0.3);
+            --text-main: #e6edf3;
+            /* Sönük griler net beyaz-gri tonuna çekildi */
+            --text-light: #ffffff;
+            --border-color: rgba(230, 237, 243, 0.3);
         }
 
         body {
@@ -201,7 +203,7 @@
                     <option value="silikat">Silikat Bazlı (Na₂SiO₃)</option>
                     <option value="fosfat">Fosfat Bazlı (Na₃PO₄)</option>
                     <option value="aluminat">Alüminat Bazlı (NaAlO₂)</option>
-                    <option value="asidik">Seyreltik Asidik (ASO Rejimi)</option>
+                    <option value="asidik">Seyreltik Sülfürik Asit (H₂SO₄)</option>
                 </select>
             </div>
 
@@ -262,6 +264,12 @@
             <div id="menu-literatur" class="alt-menu-kapsayici">
                 <button class="alt-btn" onclick="AsoSimulasyon.yukle(this, 'yayin-grafigi')">ASO Yayın-Atıf
                     Grafiği</button>
+            </div>
+
+            <button class="menu-btn" id="btn-ekoller"
+                onclick="AsoSimulasyon.toggleMenu('menu-ekoller', 'btn-ekoller')">⚡ Ekoller & Aralıklar</button>
+            <div id="menu-ekoller" class="alt-menu-kapsayici">
+                <button class="alt-btn" onclick="AsoSimulasyon.yukle(this, 'ekoller')">PEO vs MAO vs ASO Kıyası</button>
             </div>
         </div>
     </nav>
